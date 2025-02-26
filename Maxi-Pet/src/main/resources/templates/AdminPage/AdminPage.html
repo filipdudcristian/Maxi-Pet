@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        header {
+            background-color: #e70101;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        nav {
+            background-color: #666;
+            color: white;
+            padding: 10px;
+            text-align: center;
+        }
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            padding: 10px 20px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        nav a:hover {
+            background-color: #555;
+        }
+        section {
+            padding: 20px;
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #a91e1e;
+            color: white;
+            border: none;
+            padding: 10px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .logout-button:hover {
+            background-color: #c9302c;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+
+<body>
+<header>
+    <img id="foxPicture" th:src="@{/images/maxi-pet.png}" alt="Pet Shop Admin Panel Logo">
+    <button class="logout-button" onclick="toHomePage()"><span class="glyphicon glyphicon-log-out"></span>  Logout</button>
+
+</header>
+
+<nav>
+    <a onclick="toUsersPage()">Users</a>
+    <a onclick="toProductsPage()">Products</a>
+    <a href="#">Orders</a>
+    <a href="#">Promotions</a>
+    <a href="#">Reports</a>
+</nav>
+
+<section>
+    <h1>User List</h1>
+</section>
+
+<footer>
+    <p>&copy; 2024 Maxi Pet Admin Panel</p>
+</footer>
+
+<script>
+    function toHomePage() {
+        window.location.href = '/'
+    }
+
+    function toUsersPage() {
+        window.location.href = '/user/users'
+    }
+
+    function toProductsPage() {
+        window.location.href = '/product/products'
+    }
+</script>
+</body>
+</html>

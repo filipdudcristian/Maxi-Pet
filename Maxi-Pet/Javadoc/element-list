@@ -1,0 +1,8 @@
+com.example.MaxiPet
+com.example.MaxiPet.controller
+com.example.MaxiPet.dto
+com.example.MaxiPet.dto.Builders
+com.example.MaxiPet.entity
+com.example.MaxiPet.repository
+com.example.MaxiPet.service
+com.example.MaxiPet.validators

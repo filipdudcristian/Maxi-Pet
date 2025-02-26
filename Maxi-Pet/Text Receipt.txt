@@ -1,0 +1,2 @@
+Cusca din lemn: quantity:1, unit price:255.0, total price:255.0
+Total Price: 229.5

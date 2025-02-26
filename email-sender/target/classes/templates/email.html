@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Template</title>
+    <style>
+        /* CSS styling for the email */
+        body {
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            background-color: rgb(255, 250, 238); /* Pale pink transparent background */
+            margin: 0; /* Remove default margin */
+            padding: 0; /* Remove default padding */
+            text-align: center;
+        }
+        .email-header {
+            margin-bottom: 0;
+            padding-bottom: 0;
+            text-align: center; /* Center the content horizontally */
+            height: 175px; /* Set height to match image height */
+        }
+
+        .email-header img {
+            max-width: 100%; /* Ensure the image doesn't stretch beyond its original size */
+            max-height: 100%; /* Ensure the image doesn't exceed the container's height */
+            width: auto; /* Maintain aspect ratio */
+            height: auto; /* Maintain aspect ratio */
+            margin: auto; /* Center the image horizontally */
+        }
+
+        .email-content {
+            background-color: rgb(255, 250, 238);
+            font-family: "Comic Sans MS", "Comic Sans", cursive;
+            border-radius: 0px;
+            padding: 0;
+            margin:0;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 24px;
+            color: #eb1b25;
+        }
+        p {
+            font-size: 20px;
+            color: #000001;
+        }
+    </style>
+</head>
+<body >
+<div class="email-header" >
+    <img src="https://www.xos.ro/reduceri/maxi-pet.ro/@@download/image/10906.png" alt="Header Image">
+</div>
+<div class="email-content" >
+    <!-- Aici se va insera conținutul dinamic generat în Java -->
+    $BODY_CONTENT$
+</div>
+</body>
+</html>

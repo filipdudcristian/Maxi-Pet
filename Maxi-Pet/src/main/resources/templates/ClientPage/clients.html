@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop Admin Panel</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #e70101;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #c8a173;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            font-size: 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 10px 20px;
+            background-color: #c8a173;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #7A0000FF;
+            text-decoration: none;
+            color: white;
+        }
+
+        .create-user-button {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background-color: #a91e1e; /* Updated background color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .create-user-button:hover {
+            background-color: #7A0000FF; /* Updated background color on hover */
+        }
+
+        .get-user-button {
+            background-color: #A91E1EFF; /* Change button color */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px; /* Adjust spacing */
+        }
+
+        .get-user-button:hover {
+            background-color: #7A0000FF; /* Change button color on hover */
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #a91e1e;
+            color: white;
+            border: none;
+            padding: 10px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #7A0000FF;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #dddddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        tr:hover {
+            background-color: #f2f2f2;
+        }
+
+        section{
+            padding: 20px;
+        }
+        /* Popup container - hidden by default */
+        .form-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 3px solid #f1f1f1;
+            z-index: 9;
+        }
+
+        /* Add styles to the form container */
+        .form-container {
+            max-width: 400px;
+            padding: 40px;
+            background-color: white;
+        }
+
+        /* Full-width input fields */
+        .form-container input[type=text],
+        .form-container input[type=password],
+        .form-container input[type=email]{
+            width: 100%;
+            padding: 15px;
+            margin: 5px 0 22px 0;
+            border: none;
+            background: #f1f1f1;
+        }
+
+        /* When the inputs get focus, do something */
+        .form-container input[type=text]:focus,
+        .form-container input[type=password]:focus,
+        .form-container input[type=email]:focus{
+            background-color: #ddd;
+            outline: none;
+        }
+
+        /* Add a submit button */
+        .form-container .btn, .form-container input[type=submit] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 16px 20px;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            margin-bottom: 10px;
+            opacity: 0.8;
+            border-radius: 5px;
+        }
+
+        /* Add a red background color to the cancel button */
+        .form-container .cancel {
+            background-color: red;
+        }
+
+        /* Add some hover effects to buttons */
+        .form-container .btn:hover, .open-button:hover {
+            opacity: 1;
+        }
+
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+</head>
+
+<body>
+<header>
+    <img id="foxPicture" th:src="@{/images/maxi-pet.png}" alt="Pet Shop Admin Panel Logo">
+</header>
+
+
+<nav>
+    <a onclick="toHomePage()">Home</a>
+</nav>
+
+
+<section>
+    <h1>User List</h1>
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Last Name</th>
+            <th>First Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Password</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+        <tr th:each="user:${users}">
+            <td th:text="${user.id}  ?: 'Default ID'">Default ID</td>
+            <td th:text="${user.name} ?: 'Default Name'">Default Name</td>
+            <td th:text="${user.firstName} ?: 'Default First Name'">Default First Name</td>
+            <td th:text="${user.email} ?: 'Default Email'">Default Email</td>
+            <td th:text="${user.phone} ?: 'Default Phone'">Default Phone</td>
+            <td th:text="${user.password} ?: 'Default Password'">Default Password</td>
+            <td th:text="${user.role} ?: 'Default Role'">Default Role</td>
+            <td>
+                <button type="submit" th:onclick="'toShopPage(' + ${user.id} + ')'" class="enter-shop-page">Log in as user</button>
+            </td>
+        </tr>
+    </table>
+</section>
+
+<footer>
+    <p>&copy; 2024 Maxi Pet Admin Panel</p>
+</footer>
+
+<script>
+    function toHomePage() {
+        window.location.href = '/'
+    }
+
+    function toShopPage(userId) {
+        window.location.href = '/product/products/client/' + userId;
+    }
+
+    function openUpdateForm(modalId) {
+        document.getElementById(modalId).style.display = "block";
+    }
+
+    function closeUpdateForm(modalId) {
+        document.getElementById(modalId).style.display = "none";
+    }
+</script>
+</body>
+</html>

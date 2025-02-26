@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Shop Admin Panel</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            background-color: #e70101;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        nav {
+            background-color: #c8a173;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            font-size: 16px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: white;
+            padding: 10px 20px;
+            background-color: #c8a173;
+            transition: background-color 0.3s ease;
+            cursor: pointer;
+            outline: none;
+            font-size: 16px;
+            text-decoration: none;
+            border-radius: 5px;
+            margin: 0 10px;
+        }
+
+        nav a:hover {
+            background-color: #7A0000FF;
+            text-decoration: none;
+            color: white;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        .logout-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #a91e1e;
+            color: white;
+            border: none;
+            padding: 10px 13px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-button:hover {
+            background-color: #7A0000FF;
+        }
+
+        section {
+            padding: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: white;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .order-details {
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            border: 1px solid transparent;
+        }
+
+        .order-details h3 {
+            background: linear-gradient(to right, #333, #7A0000FF); /* Gradient background */
+            color: white; /* White text color */
+            padding: 10px;
+            margin: 0;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+
+        .order-details h3, .order-details table {
+            width: 100%;
+        }
+
+        .product-details {
+            border-top: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .product-details div {
+            margin-bottom: 5px;
+        }
+
+        .review-form {
+            border-top: 1px solid #ddd;
+            padding: 10px;
+        }
+
+        .review-form input[type="text"],
+        .review-form textarea {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            resize: vertical;
+        }
+
+        .review-form input[type="submit"] {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .review-form input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <img src="/images/maxi-pet.png" alt="Pet Shop Admin Panel Logo">
+    <button class="logout-button" onclick="toHomePage()"><span class="glyphicon glyphicon-log-out"></span> Logout</button>
+</header>
+
+<nav>
+    <a th:onclick="'toShopPage(' + ${session.loggedInUser.id} + ')'">Shop</a>
+    <a th:onclick="'toShoppingCartPage(' + ${session.loggedInUser.id} + ')'">Shopping Cart</a>
+    <a th:onclick="'toOrdersPage(' + ${session.loggedInUser.id} + ')'">Orders</a>
+    <a th:onclick="'toReviewsPage(' + ${session.loggedInUser.id} + ')'">Reviews</a>
+</nav>
+
+<section>
+    <h1>Order List</h1>
+    <div class="order-details" th:each="order, iterStat : ${orders}">
+        <h3>Order #<span th:text="${order.id}">Default ID</span></h3>
+        <table style="margin-bottom: 0">
+            <tr>
+                <td><strong>Status:</strong> <span th:text="${order.status}">Default Status</span></td>
+                <td><strong>Date:</strong> <span th:text="${order.orderDate}">Default Order Date</span></td>
+                <td><strong>Total Price:</strong> <span th:text="${order.totalPrice}">Default Total Price</span></td>
+            </tr>
+        </table>
+        <div class="product-details" th:each="product : ${order.getOrderProductDTOList()}">
+            <div><strong>Product Name:</strong> <span th:text="${product.productDTO.name}">Product Name</span></div>
+            <div><strong>Quantity:</strong> <span th:text="${product.quantity}">Quantity</span></div>
+            <div><strong>Price:</strong> <span th:text="${product.productDTO.discountedPrice}">Price</span></div>
+            <div class="review-form">
+                <form th:action="'/review/insertReview'" method="post">
+                    <input type="hidden" name="userId" th:value="${session.loggedInUser.id}">
+                    <input type="hidden" name="productId" th:value="${product.productDTO.id}">
+                    <label for="rating">Rating:</label>
+                    <input type="number" id="rating" name="rating" required /><br/>
+                    <label for="text">Review:</label>
+                    <textarea id="text" name="text" required></textarea><br/>
+                    <input type="submit" value="Submit Review">
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2024 Maxi Pet E-Shop</p>
+</footer>
+
+
+<script>
+    function toHomePage() {
+        window.location.href = '/';
+    }
+
+    function toShopPage() {
+        window.location.href = '/product/products/client';
+    }
+
+    function toShoppingCartPage() {
+        window.location.href = '/user/client/cart';
+    }
+
+    function toOrdersPage() {
+        window.location.href = '/user/client/orders';
+    }
+
+    function toReviewsPage(userId) {
+        window.location.href = '/review/all';
+    }
+
+</script>
+</body>
+</html>
